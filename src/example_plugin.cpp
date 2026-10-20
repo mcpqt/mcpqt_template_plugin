@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 //
-// mcpqt_template_plugin: a starting point for an independent plugin.
+// mcpqt_example_plugin: a starting point for an independent plugin.
 //
 // Copy this repository, rename the class/file/target, and replace the example
 // public slots with your own typed functions. Keep the metadata JSON's
@@ -10,7 +10,7 @@
 // -DMCPQT_HOST_SOURCE_DIR=/path/to/mcpqt_host):
 //
 //   cmake -S . -B build && cmake --build build
-//   /path/to/mcp_stdio_server ./build/mcpqt_template_plugin.so
+//   /path/to/mcp_stdio_server ./build/mcpqt_example_plugin.so
 
 #include "plugin.h"
 
@@ -24,22 +24,21 @@
 
 namespace {
 
-class TemplatePlugin : public mcp::PluginInterface {
+class ExamplePlugin : public mcp::PluginInterface {
     Q_OBJECT
 
     // Metadata read by the host. "id" is required and should be unique among
     // loaded plugins; "version"/"description" are optional.
-    Q_CLASSINFO("id", "template")
+    Q_CLASSINFO("id", "example")
     Q_CLASSINFO("version", "0.1.0")
-    Q_CLASSINFO("description", "Template plugin — replace with your own.")
+    Q_CLASSINFO("description", "Example plugin — replace with your own.")
 
     // The IID must match MCP_PLUGIN_IID (moc does not expand macros here).
-    Q_PLUGIN_METADATA(IID "ai.mcp.qt.mcp-plugin/2.0" FILE
-                          "template_plugin.json")
+    Q_PLUGIN_METADATA(IID "ai.mcp.qt.mcp-plugin/2.0" FILE "example_plugin.json")
     Q_INTERFACES(mcp::PluginInterface)
 
 public:
-    explicit TemplatePlugin(QObject* parent = nullptr)
+    explicit ExamplePlugin(QObject* parent = nullptr)
         : mcp::PluginInterface(parent) {}
 
     void initialize(const mcp::HostInterface& host) override {
@@ -50,7 +49,7 @@ public:
     void shutdown(void) override {}
 
 public slots:
-    // Tool: "QString TemplatePlugin::hello(QString)".
+    // Tool: "QString ExamplePlugin::hello(QString)".
     QString hello(QString name) {
         if (name.isEmpty()) {
             name = QStringLiteral("world");
@@ -58,27 +57,27 @@ public slots:
         return QStringLiteral("Hello, %1!").arg(name);
     }
 
-    // Tool: "double TemplatePlugin::add(double,double)".
+    // Tool: "double ExamplePlugin::add(double,double)".
     double add(double a, double b) { return a + b; }
 
     // Tool returning structured JSON (the host maps a JSON object to
-    // structuredContent and a text dump): "QVariant TemplatePlugin::info()".
+    // structuredContent and a text dump): "QVariant ExamplePlugin::info()".
     QVariant info(void) {
         return QJsonObject{
-            {"plugin", "template"},
+            {"plugin", "example"},
             {"version", "0.1.0"},
             {"ready", true},
         };
     }
 
-    // Resource reader for "template://info". A resource reader takes an
+    // Resource reader for "example://info". A resource reader takes an
     // optional single QString (the requested URI) and returns its text.
     QString readInfo(QString uri) {
         (void)uri;
         const QJsonObject doc{
-            {"plugin", "template"},
+            {"plugin", "example"},
             {"version", "0.1.0"},
-            {"notes", "Replace this template with real content."},
+            {"notes", "Replace this example with real content."},
         };
         return QString::fromStdString(
             QJsonDocument(doc).toJson(QJsonDocument::Compact).toStdString());
@@ -87,4 +86,4 @@ public slots:
 
 }  // namespace
 
-#include "template_plugin.moc"
+#include "example_plugin.moc"
