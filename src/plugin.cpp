@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: AGPL-3.0-only
 //
 // PluginInterface implementation: meta-object-driven publication of public
 // slots as host-registered functions.
